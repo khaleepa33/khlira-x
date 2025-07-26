@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Khlira X</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <img src="/static/logo.png" class="logo" />
+    <h1>Khlira X Admin Panel</h1>
+
+    <div class="buttons">
+      <button onclick="sendAction('buy')">Buy</button>
+      <button onclick="sendAction('sell')">Sell</button>
+    </div>
+
+    <h3>Update Config</h3>
+    <form onsubmit="updateConfig(); return false;">
+      <input id="lot_size" placeholder="Lot size" value="{{ config.lot_size }}" />
+      <input id="tp" placeholder="Take profit" value="{{ config.take_profit }}" />
+      <input id="sl" placeholder="Stop loss" value="{{ config.stop_loss }}" />
+      <button type="submit">Save Config</button>
+    </form>
+  </div>
+
+  <script>
+    async function sendAction(action) {
+      const res = await fetch("/trade", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action })
+      });
+      const data = await res.json();
+      alert(JSON.stringify(data));
+    }
+
+    async function updateConfig() {
+      const payload = {
+        lot_size: parseFloat(document.getElementById("lot_size").value),
+        take_profit: parseFloat(document.getElementById("tp").value),
+        stop_loss: parseFloat(document.getElementById("sl").value),
+        symbol: "XAUUSD",
+        magic_number: 123456,
+        auto_trade: true
+      };
+      const res = await fetch("/update-config", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      alert("Saved!");
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+{
+  "lot_size": 0.5,
+  "take_profit": 500,
+  "stop_loss": 200,
+  "symbol": "XAUUSD",
+  "magic_number": 123456,
+  "auto_trade": true
+}
